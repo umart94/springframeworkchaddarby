@@ -1,0 +1,28 @@
+Injection types
+
+There are three options for how dependencies can be injected into a bean:
+
+Through a constructor
+Through setters or other methods
+Through reflection, directly into fields
+You are using option 3. That is what is happening when you use @Autowired directly on your field.
+
+Injection guidelines
+
+A general guideline, which is recommended by Spring (see the sections on Constructor-based DI or Setter-based DI) is the following:
+
+For mandatory dependencies or when aiming for immutability, use constructor injection
+For optional or changeable dependencies, use setter injection
+Avoid field injection in most cases
+Field injection drawbacks
+
+The reasons why field injection is frowned upon are as follows:
+
+You cannot create immutable objects, as you can with constructor injection
+Your classes have tight coupling with your DI container and cannot be used outside of it
+Your classes cannot be instantiated (for example in unit tests) without reflection. You need the DI container to instantiate them, which makes your tests more like integration tests
+Your real dependencies are hidden from the outside and are not reflected in your interface (either constructors or methods)
+It is really easy to have like ten dependencies. If you were using constructor injection, you would have a constructor with ten arguments, which would signal that something is fishy. But you can add injected fields using field injection indefinitely. Having too many dependencies is a red flag that the class usually does more than one thing, and that it may violate the Single Responsibility Principle.
+Conclusion
+
+Depending on your needs, you should primarily use constructor injection or some mix of constructor and setter injection. Field injection has many drawbacks and should be avoided. The only advantage of field injection is that it is more convenient to write, which does not outweigh all the cons.

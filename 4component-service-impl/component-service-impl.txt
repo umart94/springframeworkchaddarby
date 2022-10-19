@@ -1,0 +1,56 @@
+Actually you will get a resolving bean conflicts exception,
+
+There are a various solutions for that :
+
+Making one of the beans optional by using @Primary annotation.
+@Component
+@Primary
+class B implements A{
+
+    @override
+    some(){
+    }
+
+}
+
+@Component
+class C implements A{
+
+    @override
+    some(){
+    }
+
+}
+
+Class D {
+
+    @Autowired
+    List<A> somes;//B will be injected because it primary
+
+}
+Or Using @Qualifier or @Resource annotation. scenarios.
+@Component("beanB")
+class B implements A{
+
+    @override
+    some(){
+    }
+
+}
+
+@Component("beanC")
+class C implements A{
+
+    @override
+    some(){
+    }
+
+}
+
+Class D {
+
+    @Autowired
+    @Qualifier("beanB")
+    List<A> somes;//B will be injected because of @Qualifier
+
+}
